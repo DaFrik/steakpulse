@@ -269,7 +269,7 @@
       <div class="grid grid-cols-2 gap-2 mb-2">
         <div class="bg-cardDark border-2 border-neonGreen/80 rounded-lg p-2 flex flex-col items-center justify-center shadow-[0_0_10px_rgba(0,255,102,0.15)]">
           <div id="flipCounterText" class="font-black text-sm text-neonGreen tracking-tight text-center tabular-nums">
-            FLIP 1 OF 5
+            FLIP #1 OF 5
           </div>
           <div id="sideIndicator" class="text-[10px] font-extrabold text-neonCyan tracking-wider uppercase text-center mt-0.5">
             SIDE A COOKING
@@ -731,7 +731,7 @@
       } else {
         const currentFlip = Math.floor(cookElapsedSec / 60) + 1;
         const totalFlips = cookTargetMins;
-        flipCounterText.innerText = `FLIP ${Math.min(currentFlip, totalFlips)} OF ${totalFlips}`;
+        flipCounterText.innerText = `FLIP #${Math.min(currentFlip, totalFlips)} OF ${totalFlips}`;
         flipCounterText.className = "font-black text-sm text-neonGreen tracking-tight text-center tabular-nums";
 
         const isSideA = currentFlip % 2 !== 0;
