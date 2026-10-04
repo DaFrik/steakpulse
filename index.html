@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>STEAKPULSE - The Secret to Perfect Steak</title>
 
-<!-- Standard Favicons -->
-<link rel="icon" type="image/png" href="/steakpulse/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/steakpulse/favicon.svg" />
-<link rel="shortcut icon" href="/steakpulse/favicon.ico" />
+  <!-- Standard Favicons -->
+  <link rel="icon" type="image/png" href="steakpulse/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="steakpulse/favicon.svg" />
+  <link rel="shortcut icon" href="steakpulse/favicon.ico" />
 
-<!-- Apple iOS Home Screen Icon -->
-<link rel="apple-touch-icon" sizes="180x180" href="/steakpulse/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="SteakPulse" />
+  <!-- Apple iOS Home Screen Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="steakpulse/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="SteakPulse" />
 
-<!-- Android / Web App Manifest -->
-<link rel="manifest" href="/steakpulse/site.webmanifest" />
+  <!-- Android / Web App Manifest -->
+  <link rel="manifest" href="steakpulse/site.webmanifest" />
 
-<!-- Mobile Web App Theme Color -->
+  <!-- Mobile Web App Theme Color -->
   <meta name="theme-color" content="#0a0c10">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -66,24 +66,115 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* Custom flip clock aesthetics with clean sans-serif typography */
-    .flip-card {
+    /* --------------------------------------------------
+     * RETRO 3D SPLIT-FLAP CLOCK ENGINE
+     * -------------------------------------------------- */
+    .flip-clock-unit {
       position: relative;
-      background: linear-gradient(180deg, #161f2c 0%, #0d131d 100%);
-      border: 1px solid #2d3f57;
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+      width: clamp(280px, 80vw, 420px);  /* Significantly increased width */
+      height: clamp(180px, 26vh, 260px); /* Increased height to balance large numbers */
+      perspective: 800px;
+      margin: 0 auto;
     }
-    .flip-card::after {
+
+    /* Common Card Styling */
+    .card-top, .card-bottom, .card-back-top, .card-back-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 50%;
+      overflow: hidden;
+      background: linear-gradient(180deg, #161f2c 0%, #0d131d 100%);
+      border: 1px solid #233044;
+      display: flex;
+      justify-content: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* Top Half Cards */
+    .card-top, .card-back-top {
+      top: 0;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      border-bottom: 1px solid rgba(8, 12, 20, 0.8);
+      align-items: flex-start;
+    }
+
+    /* Bottom Half Cards */
+    .card-bottom, .card-back-bottom {
+      bottom: 0;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      border-top: 1px solid rgba(8, 12, 20, 0.8);
+      align-items: flex-end;
+    }
+
+    /* Digit Text Clipping & Center Alignment */
+    .card-top span, .card-back-top span,
+    .card-bottom span, .card-back-bottom span {
+      position: absolute;
+      height: 200%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .card-top span, .card-back-top span {
+      top: 0;
+    }
+
+    .card-bottom span, .card-back-bottom span {
+      bottom: 0;
+    }
+
+    /* Flip Hinges/Shadow Center Hinge */
+    .flip-clock-unit::after {
       content: '';
       position: absolute;
       top: 50%;
-      left: 0;
-      right: 0;
-      height: 2px;
+      left: -2px;
+      right: -2px;
+      height: 3px;
       background: #080C14;
-      z-index: 10;
-      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+      transform: translateY(-50%);
+      z-index: 30;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    /* Keyframe Animations for Split Flap Downward Flip */
+    @keyframes foldTop {
+      0% {
+        transform: rotateX(0deg);
+      }
+      100% {
+        transform: rotateX(-90deg);
+      }
+    }
+
+    @keyframes unfoldBottom {
+      0% {
+        transform: rotateX(90deg);
+      }
+      100% {
+        transform: rotateX(0deg);
+      }
+    }
+
+    /* Active Animation Classes applied by JS */
+    .animate-top-fold {
+      animation: foldTop 0.18s ease-in forwards;
+      transform-origin: bottom center;
+      z-index: 20;
+    }
+
+    .animate-bottom-unfold {
+      animation: unfoldBottom 0.18s ease-out 0.18s forwards;
+      transform-origin: top center;
+      z-index: 20;
     }
 
     /* Pulse animation for active cooking state */
@@ -130,7 +221,7 @@
     <!-- STEAK SELECTOR SECTION (FIXED COMPACT) -->
     <section class="flex-shrink-0 bg-panelDark border border-borderDark rounded-xl p-2.5 sm:p-3 shadow-lg">
       
-      <!-- CUT & THICKNESS ROW (ALIGNED BOTTOM WITH items-end AND MATCHING h-12 HEIGHTS) -->
+      <!-- CUT & THICKNESS ROW -->
       <div class="grid grid-cols-2 gap-2 mb-2 items-end">
         <!-- STEAK CUT -->
         <div class="flex flex-col">
@@ -188,7 +279,7 @@
       </div>
     </section>
 
-    <!-- TARGET ADJUSTMENT ROW (FIXED COMPACT) -->
+    <!-- TARGET ADJUSTMENT ROW -->
     <section class="flex-shrink-0 grid grid-cols-2 gap-2">
       <!-- COOK TARGET -->
       <div class="bg-panelDark border border-borderDark rounded-xl p-2 sm:p-2.5 flex items-center justify-between">
@@ -221,28 +312,46 @@
       </div>
     </section>
 
-    <!-- FLEXIBLE ACTIVE TIMER CARDS (EXPANDS ON TALL SCREENS) -->
+    <!-- FLEXIBLE ACTIVE TIMER CARDS -->
     <div class="flex-1 flex flex-col gap-2 min-h-0">
       
-<!-- TOP CARD: 1-MINUTE NEXT FLIP COUNTDOWN (FLEX-1 EXPANDS VERTICALLY) -->
-<section class="flex-1 flex-grow bg-panelDark border border-borderDark rounded-xl p-1.5 sm:p-2 shadow-xl flex flex-col justify-between items-center relative overflow-hidden min-h-[110px]">
-  <div class="text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 flex-shrink-0">
-    <span>NEXT FLIP IN</span>
-  </div>
+      <!-- TOP CARD: 3D SPLIT-FLAP COUNTDOWN DISPLAY -->
+      <section class="flex-1 flex-grow bg-panelDark border border-borderDark rounded-xl p-3 shadow-xl flex flex-col justify-between items-center relative overflow-hidden min-h-[220px]">
+        <div class="text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 flex-shrink-0 mb-1">
+          <span>NEXT FLIP IN</span>
+        </div>
 
-  <!-- FLIP COUNTDOWN DISPLAY (HIGH-LEGIBILITY SANS NUMERALS WITH OPEN COUNTERS) -->
-  <div class="flip-card w-full max-w-sm my-0.5 py-0 px-4 sm:px-8 flex items-center justify-center flex-1 max-h-[130px]">
-    <span id="flipCountdownDigits" class="font-black text-[clamp(3.5rem,10vh,6.5rem)] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_12px_rgba(0,255,102,0.4)] tabular-nums">60</span>
-  </div>
+        <!-- 3D SPLIT FLAP CARD CONTAINER -->
+        <div class="flip-clock-unit flex-1 flex items-center justify-center my-1">
+          <!-- Static Back Top -->
+          <div class="card-back-top">
+            <span id="flipDigitNextTop" class="font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums">60</span>
+          </div>
+          
+          <!-- Static Back Bottom -->
+          <div class="card-back-bottom">
+            <span id="flipDigitNextBottom" class="font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums">60</span>
+          </div>
+          
+          <!-- Animated Top Half -->
+          <div id="cardTopHalf" class="card-top">
+            <span id="flipDigitCurrentTop" class="font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums">60</span>
+          </div>
+          
+          <!-- Animated Bottom Half -->
+          <div id="cardBottomHalf" class="card-bottom">
+            <span id="flipDigitCurrentBottom" class="font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums">60</span>
+          </div>
+        </div>
 
-  <div class="flex-shrink-0">
-    <span class="text-[10px] sm:text-xs font-black tracking-widest text-slate-300 bg-cardDark/80 border border-borderDark px-3 py-0.5 rounded-full uppercase">
-      SECONDS
-    </span>
-  </div>
-</section>
+        <div class="flex-shrink-0 mt-1">
+          <span class="text-[10px] sm:text-xs font-black tracking-widest text-slate-300 bg-cardDark/80 border border-borderDark px-3 py-0.5 rounded-full uppercase">
+            SECONDS
+          </span>
+        </div>
+      </section>
 
-      <!-- BOTTOM CARD: FLIP TRACKER & TOTAL ELAPSED (FIXED / SLIGHT EXPANSION) -->
+      <!-- BOTTOM CARD: FLIP TRACKER & TOTAL ELAPSED -->
       <section class="flex-shrink-0 bg-panelDark border border-borderDark rounded-xl p-2.5 sm:p-3 shadow-xl flex flex-col justify-between">
         
         <div class="text-[11px] font-black uppercase tracking-widest text-neonGreen mb-1.5 flex justify-between items-center">
@@ -254,7 +363,6 @@
 
         <!-- GRID ROW FOR FLIP STATUS & TOTAL ELAPSED -->
         <div class="grid grid-cols-2 gap-2 mb-2">
-          
           <!-- FLIP BADGE -->
           <div class="bg-cardDark border-2 border-neonGreen/80 rounded-lg p-2 flex flex-col items-center justify-center shadow-[0_0_10px_rgba(0,255,102,0.15)]">
             <div id="flipCounterText" class="font-black text-sm sm:text-lg text-neonGreen tracking-tight text-center tabular-nums">
@@ -273,10 +381,9 @@
               <span class="text-xs text-slate-400 font-semibold">/ <span id="totalTargetDigits">05:00</span></span>
             </div>
           </div>
-
         </div>
 
-        <!-- THICKER PROGRESS BAR & TIME REMAINING -->
+        <!-- PROGRESS BAR & TIME REMAINING -->
         <div class="flex flex-col gap-1.5">
           <div class="w-full bg-slate-950 rounded-full h-4 p-0.5 border border-slate-700/80 overflow-hidden shadow-inner">
             <div id="progressBarFill" class="bg-gradient-to-r from-emerald-500 to-neonGreen h-full rounded-full transition-all duration-300 w-0 shadow-[0_0_12px_#00FF66]"></div>
@@ -292,7 +399,7 @@
 
     </div>
 
-    <!-- PRIMARY KITCHEN ACTION CONTROLS (PINNED AT BOTTOM) -->
+    <!-- PRIMARY KITCHEN ACTION CONTROLS -->
     <section class="flex-shrink-0 grid grid-cols-3 gap-2 mt-1">
       <button id="startPauseBtn" onclick="toggleTimer()" class="col-span-2 py-3.5 px-4 rounded-xl font-black text-base sm:text-lg bg-neonGreen text-brandDark hover:bg-emerald-400 active:scale-95 transition shadow-glow-green flex items-center justify-center gap-2">
         <svg id="startPauseIcon" class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -310,7 +417,7 @@
     /* --------------------------------------------------
      * STATE MANAGEMENT & CONFIGURATION
      * -------------------------------------------------- */
-    let currentUnit = 'in'; // 'in' or 'cm'
+    let currentUnit = 'in';
     let selectedCut = 'ribeye';
     let selectedDoneness = 'medium';
 
@@ -324,33 +431,17 @@
     let restElapsedSec = 0;
     let flipCountdownSec = 60;
 
+    let currentDigitVal = '60';
     let soundMuted = false;
 
-    /* Chef Recommendations & Formula Database */
     const steakRecommendations = {
-      ribeye: {
-        recDoneness: 'medium',
-        reason: 'Medium for Ribeye renders rich fat for maximum flavor.'
-      },
-      filet: {
-        recDoneness: 'medium_rare',
-        reason: 'Medium-Rare for Filet Mignon preserves extreme tenderness without drying.'
-      },
-      sirloin: {
-        recDoneness: 'medium',
-        reason: 'Medium for Top Sirloin softens fibers and crisps side fat strip.'
-      },
-      ny_strip: {
-        recDoneness: 'medium_rare',
-        reason: 'Medium-Rare for New York Strip balances marbling and tight beef grain.'
-      },
-      flat_iron: {
-        recDoneness: 'medium_rare',
-        reason: 'Medium-Rare for Flat Iron highlights juicy tenderness equal to filet.'
-      }
+      ribeye: { recDoneness: 'medium', reason: 'Medium for Ribeye renders rich fat for maximum flavor.' },
+      filet: { recDoneness: 'medium_rare', reason: 'Medium-Rare for Filet Mignon preserves extreme tenderness without drying.' },
+      sirloin: { recDoneness: 'medium', reason: 'Medium for Top Sirloin softens fibers and crisps side fat strip.' },
+      ny_strip: { recDoneness: 'medium_rare', reason: 'Medium-Rare for New York Strip balances marbling and tight beef grain.' },
+      flat_iron: { recDoneness: 'medium_rare', reason: 'Medium-Rare for Flat Iron highlights juicy tenderness equal to filet.' }
     };
 
-    /* Base cook time (minutes) per inch for 1 inch thickness */
     const donenessBaseTimePerInch = {
       rare: 3.5,
       medium_rare: 4.25,
@@ -360,7 +451,7 @@
     };
 
     /* --------------------------------------------------
-     * AUDIO SYNTHESIS (Web Audio API)
+     * AUDIO SYNTHESIS
      * -------------------------------------------------- */
     let audioCtx = null;
 
@@ -387,23 +478,19 @@
 
       if (type === 'flip') {
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, now); // A5
+        osc.frequency.setValueAtTime(880, now);
         osc.frequency.setValueAtTime(1200, now + 0.1);
-        
         gain.gain.setValueAtTime(0.3, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-
         osc.start(now);
         osc.stop(now + 0.3);
       } else if (type === 'phase_end') {
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(523.25, now); // C5
-        osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
-        osc.frequency.setValueAtTime(783.99, now + 0.3); // G5
-
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.15);
+        osc.frequency.setValueAtTime(783.99, now + 0.3);
         gain.gain.setValueAtTime(0.4, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-
         osc.start(now);
         osc.stop(now + 0.6);
       } else if (type === 'tick') {
@@ -411,7 +498,6 @@
         osc.frequency.setValueAtTime(600, now);
         gain.gain.setValueAtTime(0.1, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-
         osc.start(now);
         osc.stop(now + 0.05);
       }
@@ -442,23 +528,18 @@
 
     function setUnit(unit) {
       if (currentUnit === unit) return;
-      
       const input = document.getElementById('thicknessInput');
       let val = parseFloat(input.value) || 1.0;
 
       if (unit === 'cm') {
         val = (val * 2.54).toFixed(1);
-        input.min = "1.0";
-        input.max = "8.0";
-        input.step = "0.5";
+        input.min = "1.0"; input.max = "8.0"; input.step = "0.5";
         document.getElementById('unitLabel').innerText = 'cm';
         document.getElementById('unitCmBtn').className = 'px-2.5 py-0.5 text-[11px] font-black rounded-md transition bg-neonAmber text-brandDark';
         document.getElementById('unitInBtn').className = 'px-2.5 py-0.5 text-[11px] font-black rounded-md transition text-slate-400 hover:text-white';
       } else {
         val = (val / 2.54).toFixed(1);
-        input.min = "0.5";
-        input.max = "3.0";
-        input.step = "0.25";
+        input.min = "0.5"; input.max = "3.0"; input.step = "0.25";
         document.getElementById('unitLabel').innerText = 'in';
         document.getElementById('unitInBtn').className = 'px-2.5 py-0.5 text-[11px] font-black rounded-md transition bg-neonAmber text-brandDark';
         document.getElementById('unitCmBtn').className = 'px-2.5 py-0.5 text-[11px] font-black rounded-md transition text-slate-400 hover:text-white';
@@ -498,7 +579,6 @@
         const isRec = rec && rec.recDoneness === d;
 
         let classes = 'doneness-btn relative py-2 rounded-lg font-extrabold text-xs transition flex items-center justify-center ';
-
         if (isSelected) {
           classes += 'bg-neonAmber text-brandDark border-2 border-amber-300 font-black shadow-glow-amber ';
         } else {
@@ -506,7 +586,6 @@
         }
 
         btn.className = classes;
-
         const dotHTML = isRec ? `<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-neonAmber rounded-full border border-brandDark shadow-[0_0_6px_#FFB000]"></span>` : '';
         
         let label = d.replace('_', '-');
@@ -530,7 +609,6 @@
       
       let rawCookMins = Math.round(basePerInch * thicknessInInches);
       cookTargetMins = Math.max(2, Math.min(20, rawCookMins));
-
       restTargetMins = Math.max(3, Math.round(cookTargetMins * 0.8));
 
       updateUI();
@@ -544,6 +622,45 @@
         restTargetMins = Math.max(1, Math.min(20, restTargetMins + delta));
       }
       updateUI();
+    }
+
+    /* --------------------------------------------------
+     * 3D SPLIT-FLAP ANIMATION CONTROLLER
+     * -------------------------------------------------- */
+    function setFlipClockNumber(newValStr, colorClass = 'text-neonGreen') {
+      if (currentDigitVal === newValStr) return;
+
+      const topHalf = document.getElementById('cardTopHalf');
+      const bottomHalf = document.getElementById('cardBottomHalf');
+
+      const nextTop = document.getElementById('flipDigitNextTop');
+      const nextBottom = document.getElementById('flipDigitNextBottom');
+      const currTop = document.getElementById('flipDigitCurrentTop');
+      const currBottom = document.getElementById('flipDigitCurrentBottom');
+
+      const fontClasses = `font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none ${colorClass} tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums`;
+
+      [nextTop, nextBottom, currTop, currBottom].forEach(el => {
+        el.className = fontClasses;
+      });
+
+      nextTop.innerText = newValStr;
+      nextBottom.innerText = newValStr;
+
+      topHalf.classList.remove('animate-top-fold');
+      bottomHalf.classList.remove('animate-bottom-unfold');
+      void topHalf.offsetWidth; // Force Reflow
+
+      topHalf.classList.add('animate-top-fold');
+      bottomHalf.classList.add('animate-bottom-unfold');
+
+      setTimeout(() => {
+        currTop.innerText = newValStr;
+        currBottom.innerText = newValStr;
+        topHalf.classList.remove('animate-top-fold');
+        bottomHalf.classList.remove('animate-bottom-unfold');
+        currentDigitVal = newValStr;
+      }, 350);
     }
 
     /* --------------------------------------------------
@@ -624,6 +741,13 @@
       cookElapsedSec = 0;
       restElapsedSec = 0;
       flipCountdownSec = 60;
+      currentDigitVal = '60';
+
+      document.getElementById('flipDigitCurrentTop').innerText = '60';
+      document.getElementById('flipDigitCurrentBottom').innerText = '60';
+      document.getElementById('flipDigitNextTop').innerText = '60';
+      document.getElementById('flipDigitNextBottom').innerText = '60';
+
       calculateTimes();
       updateUI();
     }
@@ -648,49 +772,40 @@
       if (timerState === 'STOPPED') {
         phaseBadge.innerText = 'READY';
         phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-amber-500/20 text-neonAmber border border-neonAmber/40 uppercase tracking-widest tabular-nums';
-        
         startPauseBtn.className = 'col-span-2 py-3.5 px-4 rounded-xl font-black text-base sm:text-lg bg-neonGreen text-brandDark hover:bg-emerald-400 active:scale-95 transition shadow-glow-green flex items-center justify-center gap-2';
         startPauseLabel.innerText = 'START COOK';
         startPauseIcon.innerHTML = `<path d="M8 5v14l11-7z"/>`;
-
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen shadow-[0_0_8px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-slate-600';
       } 
       else if (timerState === 'COOKING') {
         phaseBadge.innerText = 'COOKING';
         phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-emerald-500/20 text-neonGreen border border-neonGreen/40 uppercase tracking-widest tabular-nums';
-        
         startPauseBtn.className = 'col-span-2 py-3.5 px-4 rounded-xl font-black text-base sm:text-lg bg-neonAmber text-brandDark hover:bg-amber-400 active:scale-95 transition shadow-glow-amber flex items-center justify-center gap-2';
         startPauseLabel.innerText = 'PAUSE';
         startPauseIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
-
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen animate-pulse-glow shadow-[0_0_12px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonAmber animate-pulse-glow shadow-[0_0_6px_#FFB000]';
       } 
       else if (timerState === 'PAUSED_COOK' || timerState === 'PAUSED_REST') {
         phaseBadge.innerText = 'PAUSED';
         phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-slate-700 text-slate-300 border border-slate-500 uppercase tracking-widest tabular-nums';
-
         startPauseBtn.className = 'col-span-2 py-3.5 px-4 rounded-xl font-black text-base sm:text-lg bg-neonGreen text-brandDark hover:bg-emerald-400 active:scale-95 transition shadow-glow-green flex items-center justify-center gap-2';
         startPauseLabel.innerText = 'RESUME';
         startPauseIcon.innerHTML = `<path d="M8 5v14l11-7z"/>`;
-
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-slate-500';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-slate-600';
       }
       else if (timerState === 'RESTING') {
         phaseBadge.innerText = 'RESTING';
         phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-cyan-500/20 text-neonCyan border border-neonCyan/40 uppercase tracking-widest tabular-nums';
-
         startPauseBtn.className = 'col-span-2 py-3.5 px-4 rounded-xl font-black text-base sm:text-lg bg-neonAmber text-brandDark hover:bg-amber-400 active:scale-95 transition shadow-glow-amber flex items-center justify-center gap-2';
         startPauseLabel.innerText = 'PAUSE REST';
         startPauseIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
-
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_12px_#00E5FF]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_6px_#00E5FF]';
       }
 
-      const flipDigitsEl = document.getElementById('flipCountdownDigits');
       const flipCounterText = document.getElementById('flipCounterText');
       const sideIndicator = document.getElementById('sideIndicator');
       const totalElapsedDigits = document.getElementById('totalElapsedDigits');
@@ -700,12 +815,12 @@
       const timeRemainingText = document.getElementById('timeRemainingText');
 
       if (timerState === 'RESTING' || timerState === 'PAUSED_REST') {
-        flipDigitsEl.innerText = formatSS(totalRestSec - restElapsedSec);
-        flipDigitsEl.className = "font-black text-[clamp(4.8rem,15vh,8rem)] leading-none text-neonCyan tracking-tight drop-shadow-[0_0_12px_rgba(0,229,255,0.4)] tabular-nums";
+        const currentRestVal = totalRestSec - restElapsedSec;
+        const valStr = formatSS(currentRestVal);
+        setFlipClockNumber(valStr, 'text-neonCyan');
 
         flipCounterText.innerText = "RESTING STEAK";
         flipCounterText.className = "font-black text-sm sm:text-lg text-neonCyan tracking-tight text-center tabular-nums";
-
         sideIndicator.innerText = "DO NOT CUT YET";
         sideIndicator.className = "text-[10px] font-extrabold text-neonAmber tracking-wider uppercase text-center mt-0.5";
 
@@ -720,8 +835,8 @@
         const remSec = Math.max(0, totalRestSec - restElapsedSec);
         timeRemainingText.innerText = `${formatMMSS(remSec)} LEFT`;
       } else {
-        flipDigitsEl.innerText = flipCountdownSec < 10 ? `0${flipCountdownSec}` : flipCountdownSec;
-        flipDigitsEl.className = "font-black text-[clamp(4.8rem,15vh,8rem)] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_12px_rgba(0,255,102,0.4)] tabular-nums";
+        const valStr = flipCountdownSec < 10 ? `0${flipCountdownSec}` : `${flipCountdownSec}`;
+        setFlipClockNumber(valStr, 'text-neonGreen');
 
         const currentFlip = Math.floor(cookElapsedSec / 60) + 1;
         const totalFlips = cookTargetMins;
@@ -755,7 +870,7 @@
 
     function formatSS(totalSeconds) {
       const s = Math.max(0, totalSeconds);
-      return s < 10 ? `0${s}` : s;
+      return s < 10 ? `0${s}` : `${s}`;
     }
   </script>
 </body>
