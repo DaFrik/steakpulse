@@ -66,117 +66,6 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* --------------------------------------------------
-     * RETRO 3D SPLIT-FLAP CLOCK ENGINE
-     * -------------------------------------------------- */
-    .flip-clock-unit {
-      position: relative;
-      width: clamp(280px, 80vw, 420px);  /* Significantly increased width */
-      height: clamp(180px, 26vh, 260px); /* Increased height to balance large numbers */
-      perspective: 800px;
-      margin: 0 auto;
-    }
-
-    /* Common Card Styling */
-    .card-top, .card-bottom, .card-back-top, .card-back-bottom {
-      position: absolute;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 50%;
-      overflow: hidden;
-      background: linear-gradient(180deg, #161f2c 0%, #0d131d 100%);
-      border: 1px solid #233044;
-      display: flex;
-      justify-content: center;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    /* Top Half Cards */
-    .card-top, .card-back-top {
-      top: 0;
-      border-top-left-radius: 16px;
-      border-top-right-radius: 16px;
-      border-bottom: 1px solid rgba(8, 12, 20, 0.8);
-      align-items: flex-start;
-    }
-
-    /* Bottom Half Cards */
-    .card-bottom, .card-back-bottom {
-      bottom: 0;
-      border-bottom-left-radius: 16px;
-      border-bottom-right-radius: 16px;
-      border-top: 1px solid rgba(8, 12, 20, 0.8);
-      align-items: flex-end;
-    }
-
-    /* Digit Text Clipping & Center Alignment */
-    .card-top span, .card-back-top span,
-    .card-bottom span, .card-back-bottom span {
-      position: absolute;
-      height: 200%;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-    }
-
-    .card-top span, .card-back-top span {
-      top: 0;
-    }
-
-    .card-bottom span, .card-back-bottom span {
-      bottom: 0;
-    }
-
-    /* Flip Hinges/Shadow Center Hinge */
-    .flip-clock-unit::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: -2px;
-      right: -2px;
-      height: 3px;
-      background: #080C14;
-      transform: translateY(-50%);
-      z-index: 30;
-      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    /* Keyframe Animations for Split Flap Downward Flip */
-    @keyframes foldTop {
-      0% {
-        transform: rotateX(0deg);
-      }
-      100% {
-        transform: rotateX(-90deg);
-      }
-    }
-
-    @keyframes unfoldBottom {
-      0% {
-        transform: rotateX(90deg);
-      }
-      100% {
-        transform: rotateX(0deg);
-      }
-    }
-
-    /* Active Animation Classes applied by JS */
-    .animate-top-fold {
-      animation: foldTop 0.18s ease-in forwards;
-      transform-origin: bottom center;
-      z-index: 20;
-    }
-
-    .animate-bottom-unfold {
-      animation: unfoldBottom 0.18s ease-out 0.18s forwards;
-      transform-origin: top center;
-      z-index: 20;
-    }
-
     /* Pulse animation for active cooking state */
     @keyframes pulse-glow {
       0%, 100% { opacity: 1; transform: scale(1); }
@@ -184,6 +73,13 @@
     }
     .animate-pulse-glow {
       animation: pulse-glow 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* SVG Progress Ring Transitions - Starts at 12 o'clock and shrinks clockwise (right side first) */
+    .progress-ring-circle {
+      transition: stroke-dashoffset 0.8s ease-in-out, stroke 0.3s ease;
+      transform: rotate(-90deg) scaleX(-1);
+      transform-origin: 50% 50%;
     }
 
     /* Prevents rubber-banding on mobile devices */
@@ -315,40 +211,53 @@
     <!-- FLEXIBLE ACTIVE TIMER CARDS -->
     <div class="flex-1 flex flex-col gap-2 min-h-0">
       
-      <!-- TOP CARD: 3D SPLIT-FLAP COUNTDOWN DISPLAY -->
-      <section class="flex-1 flex-grow bg-panelDark border border-borderDark rounded-xl p-3 shadow-xl flex flex-col justify-between items-center relative overflow-hidden min-h-[220px]">
-        <div class="text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 flex-shrink-0 mb-1">
+      <!-- TOP CARD: CIRCULAR COUNTDOWN RING DISPLAY -->
+      <section class="flex-1 flex-grow bg-panelDark border border-borderDark rounded-xl p-3 shadow-xl flex flex-col items-center justify-center relative overflow-hidden min-h-[180px]">
+        
+        <div id="ringLabelText" class="absolute top-2 text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 z-10">
           <span>NEXT FLIP IN</span>
         </div>
 
-        <!-- 3D SPLIT FLAP CARD CONTAINER -->
-        <div class="flip-clock-unit flex-1 flex items-center justify-center my-1">
-          <!-- Static Back Top -->
-          <div class="card-back-top">
-            <span id="flipDigitNextTop" class="font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums">60</span>
-          </div>
-          
-          <!-- Static Back Bottom -->
-          <div class="card-back-bottom">
-            <span id="flipDigitNextBottom" class="font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums">60</span>
-          </div>
-          
-          <!-- Animated Top Half -->
-          <div id="cardTopHalf" class="card-top">
-            <span id="flipDigitCurrentTop" class="font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums">60</span>
-          </div>
-          
-          <!-- Animated Bottom Half -->
-          <div id="cardBottomHalf" class="card-bottom">
-            <span id="flipDigitCurrentBottom" class="font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums">60</span>
+        <!-- CIRCULAR GAUGE WRAPPER -->
+        <div class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center my-auto">
+          <!-- SVG CIRCLE GAUGE (Starts at 12 o'clock and shrinks clockwise, right side first) -->
+          <svg class="w-full h-full" viewBox="0 0 120 120">
+            <!-- Background Track Circle -->
+            <circle
+              cx="60"
+              cy="60"
+              r="52"
+              stroke="#182130"
+              stroke-width="7"
+              fill="transparent"
+            />
+            <!-- Animated Reducing Ring starting at 12 o'clock & shrinking clockwise -->
+            <circle
+              id="progressRing"
+              class="progress-ring-circle"
+              cx="60"
+              cy="60"
+              r="52"
+              stroke="#00FF66"
+              stroke-width="7"
+              stroke-linecap="round"
+              fill="transparent"
+              stroke-dasharray="326.72"
+              stroke-dashoffset="0"
+            />
+          </svg>
+
+          <!-- CENTER DISPLAY NUMBER -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+            <span id="countdownNumber" class="font-extrabold text-5xl sm:text-6xl text-neonGreen tracking-tight drop-shadow-[0_0_12px_rgba(0,255,102,0.4)] tabular-nums leading-none">
+              60
+            </span>
+            <span id="countdownUnitText" class="text-[10px] sm:text-xs font-black tracking-widest text-slate-400 uppercase mt-1">
+              SECONDS
+            </span>
           </div>
         </div>
 
-        <div class="flex-shrink-0 mt-1">
-          <span class="text-[10px] sm:text-xs font-black tracking-widest text-slate-300 bg-cardDark/80 border border-borderDark px-3 py-0.5 rounded-full uppercase">
-            SECONDS
-          </span>
-        </div>
       </section>
 
       <!-- BOTTOM CARD: FLIP TRACKER & TOTAL ELAPSED -->
@@ -431,8 +340,11 @@
     let restElapsedSec = 0;
     let flipCountdownSec = 60;
 
-    let currentDigitVal = '60';
     let soundMuted = false;
+
+    // SVG Ring Perimeter Calculations
+    const CIRCLE_RADIUS = 52;
+    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * CIRCLE_RADIUS; // ~326.72
 
     const steakRecommendations = {
       ribeye: { recDoneness: 'medium', reason: 'Medium for Ribeye renders rich fat for maximum flavor.' },
@@ -625,45 +537,6 @@
     }
 
     /* --------------------------------------------------
-     * 3D SPLIT-FLAP ANIMATION CONTROLLER
-     * -------------------------------------------------- */
-    function setFlipClockNumber(newValStr, colorClass = 'text-neonGreen') {
-      if (currentDigitVal === newValStr) return;
-
-      const topHalf = document.getElementById('cardTopHalf');
-      const bottomHalf = document.getElementById('cardBottomHalf');
-
-      const nextTop = document.getElementById('flipDigitNextTop');
-      const nextBottom = document.getElementById('flipDigitNextBottom');
-      const currTop = document.getElementById('flipDigitCurrentTop');
-      const currBottom = document.getElementById('flipDigitCurrentBottom');
-
-      const fontClasses = `font-extrabold text-[7.5rem] sm:text-[9.5rem] md:text-[11.5rem] lg:text-[13rem] leading-none ${colorClass} tracking-tight drop-shadow-[0_0_15px_rgba(0,255,102,0.5)] tabular-nums`;
-
-      [nextTop, nextBottom, currTop, currBottom].forEach(el => {
-        el.className = fontClasses;
-      });
-
-      nextTop.innerText = newValStr;
-      nextBottom.innerText = newValStr;
-
-      topHalf.classList.remove('animate-top-fold');
-      bottomHalf.classList.remove('animate-bottom-unfold');
-      void topHalf.offsetWidth; // Force Reflow
-
-      topHalf.classList.add('animate-top-fold');
-      bottomHalf.classList.add('animate-bottom-unfold');
-
-      setTimeout(() => {
-        currTop.innerText = newValStr;
-        currBottom.innerText = newValStr;
-        topHalf.classList.remove('animate-top-fold');
-        bottomHalf.classList.remove('animate-bottom-unfold');
-        currentDigitVal = newValStr;
-      }, 350);
-    }
-
-    /* --------------------------------------------------
      * TIMER CONTROLLER ENGINE
      * -------------------------------------------------- */
     function toggleTimer() {
@@ -741,20 +614,31 @@
       cookElapsedSec = 0;
       restElapsedSec = 0;
       flipCountdownSec = 60;
-      currentDigitVal = '60';
-
-      document.getElementById('flipDigitCurrentTop').innerText = '60';
-      document.getElementById('flipDigitCurrentBottom').innerText = '60';
-      document.getElementById('flipDigitNextTop').innerText = '60';
-      document.getElementById('flipDigitNextBottom').innerText = '60';
 
       calculateTimes();
       updateUI();
     }
 
     /* --------------------------------------------------
-     * UI & DISPLAY RENDERER
+     * CIRCULAR GAUGE & UI RENDERER
      * -------------------------------------------------- */
+    function setGaugeValue(currentVal, maxVal, colorHex, glowColor) {
+      const ring = document.getElementById('progressRing');
+      const numDisplay = document.getElementById('countdownNumber');
+
+      numDisplay.innerText = currentVal < 10 && currentVal >= 0 ? `0${currentVal}` : `${currentVal}`;
+      numDisplay.style.color = colorHex;
+      numDisplay.style.filter = `drop-shadow(0 0 12px ${glowColor})`;
+
+      // Calculate stroke dashoffset for clockwise ring reduction starting from 12 o'clock
+      const fraction = Math.max(0, Math.min(1, currentVal / maxVal));
+      const offset = CIRCLE_CIRCUMFERENCE * (1 - fraction);
+
+      ring.style.strokeDashoffset = offset;
+      ring.style.stroke = colorHex;
+      ring.style.filter = `drop-shadow(0 0 8px ${glowColor})`;
+    }
+
     function updateUI() {
       const totalCookSec = cookTargetMins * 60;
       const totalRestSec = restTargetMins * 60;
@@ -768,6 +652,7 @@
       const startPauseIcon = document.getElementById('startPauseIcon');
       const statusDot = document.getElementById('statusDot');
       const elapsedBlinkDot = document.getElementById('elapsedBlinkDot');
+      const ringLabelText = document.getElementById('ringLabelText');
 
       if (timerState === 'STOPPED') {
         phaseBadge.innerText = 'READY';
@@ -777,6 +662,10 @@
         startPauseIcon.innerHTML = `<path d="M8 5v14l11-7z"/>`;
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen shadow-[0_0_8px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-slate-600';
+        ringLabelText.innerHTML = `<span>NEXT FLIP IN</span>`;
+        ringLabelText.className = 'absolute top-2 text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 z-10';
+        
+        setGaugeValue(60, 60, '#00FF66', 'rgba(0, 255, 102, 0.4)');
       } 
       else if (timerState === 'COOKING') {
         phaseBadge.innerText = 'COOKING';
@@ -786,6 +675,10 @@
         startPauseIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen animate-pulse-glow shadow-[0_0_12px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonAmber animate-pulse-glow shadow-[0_0_6px_#FFB000]';
+        ringLabelText.innerHTML = `<span>NEXT FLIP IN</span>`;
+        ringLabelText.className = 'absolute top-2 text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 z-10';
+
+        setGaugeValue(flipCountdownSec, 60, '#00FF66', 'rgba(0, 255, 102, 0.4)');
       } 
       else if (timerState === 'PAUSED_COOK' || timerState === 'PAUSED_REST') {
         phaseBadge.innerText = 'PAUSED';
@@ -804,6 +697,11 @@
         startPauseIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_12px_#00E5FF]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_6px_#00E5FF]';
+        ringLabelText.innerHTML = `<span>REST TIME REMAINING</span>`;
+        ringLabelText.className = 'absolute top-2 text-[11px] font-black uppercase tracking-widest text-neonAmber flex items-center gap-1.5 z-10';
+
+        const currentRestVal = Math.max(0, totalRestSec - restElapsedSec);
+        setGaugeValue(currentRestVal, totalRestSec, '#00E5FF', 'rgba(0, 229, 255, 0.4)');
       }
 
       const flipCounterText = document.getElementById('flipCounterText');
@@ -815,10 +713,6 @@
       const timeRemainingText = document.getElementById('timeRemainingText');
 
       if (timerState === 'RESTING' || timerState === 'PAUSED_REST') {
-        const currentRestVal = totalRestSec - restElapsedSec;
-        const valStr = formatSS(currentRestVal);
-        setFlipClockNumber(valStr, 'text-neonCyan');
-
         flipCounterText.innerText = "RESTING STEAK";
         flipCounterText.className = "font-black text-sm sm:text-lg text-neonCyan tracking-tight text-center tabular-nums";
         sideIndicator.innerText = "DO NOT CUT YET";
@@ -835,9 +729,6 @@
         const remSec = Math.max(0, totalRestSec - restElapsedSec);
         timeRemainingText.innerText = `${formatMMSS(remSec)} LEFT`;
       } else {
-        const valStr = flipCountdownSec < 10 ? `0${flipCountdownSec}` : `${flipCountdownSec}`;
-        setFlipClockNumber(valStr, 'text-neonGreen');
-
         const currentFlip = Math.floor(cookElapsedSec / 60) + 1;
         const totalFlips = cookTargetMins;
         flipCounterText.innerText = `FLIP ${Math.min(currentFlip, totalFlips)} OF ${totalFlips}`;
@@ -866,11 +757,6 @@
       const mm = m < 10 ? `0${m}` : m;
       const ss = s < 10 ? `0${s}` : s;
       return `${mm}:${ss}`;
-    }
-
-    function formatSS(totalSeconds) {
-      const s = Math.max(0, totalSeconds);
-      return s < 10 ? `0${s}` : `${s}`;
     }
   </script>
 </body>
