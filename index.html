@@ -6,16 +6,16 @@
   <title>STEAKPULSE - The Secret to Perfect Steak</title>
 
 <!-- Standard Favicons -->
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" href="/steakpulse/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/steakpulse/favicon.svg" />
+<link rel="shortcut icon" href="/steakpulse/favicon.ico" />
 
 <!-- Apple iOS Home Screen Icon -->
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/steakpulse/apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-title" content="SteakPulse" />
 
 <!-- Android / Web App Manifest -->
-<link rel="manifest" href="/site.webmanifest" />
+<link rel="manifest" href="/steakpulse/site.webmanifest" />
 
 <!-- Mobile Web App Theme Color -->
   <meta name="theme-color" content="#0a0c10">
@@ -224,23 +224,23 @@
     <!-- FLEXIBLE ACTIVE TIMER CARDS (EXPANDS ON TALL SCREENS) -->
     <div class="flex-1 flex flex-col gap-2 min-h-0">
       
-      <!-- TOP CARD: 1-MINUTE NEXT FLIP COUNTDOWN (FLEX-1 EXPANDS VERTICALLY) -->
-      <section class="flex-1 flex-grow bg-panelDark border border-borderDark rounded-xl p-2 sm:p-3 shadow-xl flex flex-col justify-between items-center relative overflow-hidden min-h-[140px]">
-        <div class="text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 flex-shrink-0">
-          <span>NEXT FLIP IN</span>
-        </div>
+<!-- TOP CARD: 1-MINUTE NEXT FLIP COUNTDOWN (FLEX-1 EXPANDS VERTICALLY) -->
+<section class="flex-1 flex-grow bg-panelDark border border-borderDark rounded-xl p-1.5 sm:p-2 shadow-xl flex flex-col justify-between items-center relative overflow-hidden min-h-[110px]">
+  <div class="text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 flex-shrink-0">
+    <span>NEXT FLIP IN</span>
+  </div>
 
-        <!-- FLIP COUNTDOWN DISPLAY (HIGH-LEGIBILITY SANS NUMERALS WITH OPEN COUNTERS) -->
-        <div class="flip-card w-full max-w-sm my-auto py-2 px-4 sm:px-8 flex items-center justify-center flex-1 max-h-[220px]">
-          <span id="flipCountdownDigits" class="font-black text-[clamp(4.8rem,15vh,8rem)] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_12px_rgba(0,255,102,0.4)] tabular-nums">60</span>
-        </div>
+  <!-- FLIP COUNTDOWN DISPLAY (HIGH-LEGIBILITY SANS NUMERALS WITH OPEN COUNTERS) -->
+  <div class="flip-card w-full max-w-sm my-0.5 py-0 px-4 sm:px-8 flex items-center justify-center flex-1 max-h-[130px]">
+    <span id="flipCountdownDigits" class="font-black text-[clamp(3.5rem,10vh,6.5rem)] leading-none text-neonGreen tracking-tight drop-shadow-[0_0_12px_rgba(0,255,102,0.4)] tabular-nums">60</span>
+  </div>
 
-        <div class="flex-shrink-0 mt-0.5">
-          <span class="text-[10px] sm:text-xs font-black tracking-widest text-slate-300 bg-cardDark/80 border border-borderDark px-3 py-0.5 rounded-full uppercase">
-            SECONDS
-          </span>
-        </div>
-      </section>
+  <div class="flex-shrink-0">
+    <span class="text-[10px] sm:text-xs font-black tracking-widest text-slate-300 bg-cardDark/80 border border-borderDark px-3 py-0.5 rounded-full uppercase">
+      SECONDS
+    </span>
+  </div>
+</section>
 
       <!-- BOTTOM CARD: FLIP TRACKER & TOTAL ELAPSED (FIXED / SLIGHT EXPANSION) -->
       <section class="flex-shrink-0 bg-panelDark border border-borderDark rounded-xl p-2.5 sm:p-3 shadow-xl flex flex-col justify-between">
