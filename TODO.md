@@ -20,3 +20,11 @@ Because both sides retain residual heat during their brief cooling phases, the i
 
 4. Better Crust Development (Maillard Reaction)
 Frequent flips prevent moisture from pooling on the top surface of the steak. Searing away surface moisture rapidly allows the Maillard reaction (caramelization of proteins and sugars) to occur faster and more evenly.
+
+- feedback from user (Edith)
+1. Can the steak icon change according to the steak type i choose?
+2. ⁠right now the standard cooking time is 1 min per side. But sometimes i cook more than 1 min per side to get it charred or crisp. And fewer times of flipping. 
+3. ⁠by choosing rare/medium rare/medium/medium well/well done, the time for cooking and resting are set. Is it necessary to hv the user +/- the time themselves?
+4. ⁠the elapsed/total info is a bit too much for me. Since you hv the time bar at the bottom, i think that is sufficient info for the user. 
+5. ⁠the time tracker doesnt run in the background, if i switch to other app, i dun receive notification 
+6. ⁠the beeping sound can start earlier like when 5 seconds remaining instead of 3 seconds.
