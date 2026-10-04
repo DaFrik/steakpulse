@@ -61,6 +61,18 @@
   </script>
 
   <style>
+    :root {
+      /* ==========================================
+         EASY CUSTOMIZATION VARIABLES
+         Modify these values anytime to fit your layout!
+         ========================================== */
+      --circle-size: 78%;          /* Size of the circle relative to the card (70% - 80%) */
+      --number-font-size: 5.5rem;  /* Font size of the countdown number (e.g., 5.5rem, 6rem) */
+      --label-font-size: 0.75rem;  /* Font size of the seconds/label text */
+      --ring-stroke-width: 8px;    /* Thickness of the circular progress ring */
+      --circle-margin: auto;       /* Alignment/Positioning inside card (e.g., 'auto' for center, '0 auto' for top) */
+    }
+
     /* Ensure tabular numbers across all numeric displays to prevent jitter */
     .tabular-nums {
       font-variant-numeric: tabular-nums;
@@ -89,7 +101,7 @@
     }
   </style>
 </head>
-<body class="bg-brandDark text-slate-100 font-sans antialiased min-h-full flex flex-col justify-between p-2 sm:p-4 select-none">
+<body class="bg-brandDark text-slate-100 font-sans antialiased h-full flex flex-col justify-between p-3 sm:p-4 pb-[calc(2.25rem+env(safe-area-inset-bottom))] select-none">
 
   <!-- TOP HEADER / APP BAR -->
   <header class="flex-shrink-0 flex items-center justify-between px-3 py-2 bg-panelDark border border-borderDark rounded-xl shadow-lg mb-2">
@@ -212,14 +224,14 @@
     <div class="flex-1 flex flex-col gap-2 min-h-0">
       
       <!-- TOP CARD: CIRCULAR COUNTDOWN RING DISPLAY -->
-      <section class="flex-1 flex-grow bg-panelDark border border-borderDark rounded-xl p-3 shadow-xl flex flex-col items-center justify-center relative overflow-hidden min-h-[180px]">
+      <section class="flex-1 flex-grow bg-panelDark border border-borderDark rounded-xl py-1.5 px-3 shadow-xl flex flex-col items-center justify-center relative overflow-hidden min-h-0">
         
-        <div id="ringLabelText" class="absolute top-2 text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 z-10">
+        <div id="ringLabelText" class="absolute top-1 text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 z-10">
           <span>NEXT FLIP IN</span>
         </div>
 
-        <!-- CIRCULAR GAUGE WRAPPER -->
-        <div class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center my-auto">
+        <!-- CIRCULAR GAUGE WRAPPER (Customizable via CSS Variables in :root) -->
+        <div class="relative flex items-center justify-center" style="width: var(--circle-size); height: var(--circle-size); margin: var(--circle-margin);">
           <!-- SVG CIRCLE GAUGE (Starts at 12 o'clock and shrinks clockwise, right side first) -->
           <svg class="w-full h-full" viewBox="0 0 120 120">
             <!-- Background Track Circle -->
@@ -228,7 +240,7 @@
               cy="60"
               r="52"
               stroke="#182130"
-              stroke-width="7"
+              style="stroke-width: var(--ring-stroke-width);"
               fill="transparent"
             />
             <!-- Animated Reducing Ring starting at 12 o'clock & shrinking clockwise -->
@@ -239,7 +251,7 @@
               cy="60"
               r="52"
               stroke="#00FF66"
-              stroke-width="7"
+              style="stroke-width: var(--ring-stroke-width);"
               stroke-linecap="round"
               fill="transparent"
               stroke-dasharray="326.72"
@@ -249,10 +261,10 @@
 
           <!-- CENTER DISPLAY NUMBER -->
           <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-            <span id="countdownNumber" class="font-extrabold text-5xl sm:text-6xl text-neonGreen tracking-tight drop-shadow-[0_0_12px_rgba(0,255,102,0.4)] tabular-nums leading-none">
+            <span id="countdownNumber" class="font-extrabold text-neonGreen tracking-tight drop-shadow-[0_0_12px_rgba(0,255,102,0.4)] tabular-nums leading-none" style="font-size: var(--number-font-size);">
               60
             </span>
-            <span id="countdownUnitText" class="text-[10px] sm:text-xs font-black tracking-widest text-slate-400 uppercase mt-1">
+            <span id="countdownUnitText" class="font-black tracking-widest text-slate-400 uppercase mt-1" style="font-size: var(--label-font-size);">
               SECONDS
             </span>
           </div>
@@ -308,8 +320,8 @@
 
     </div>
 
-    <!-- PRIMARY KITCHEN ACTION CONTROLS -->
-    <section class="flex-shrink-0 grid grid-cols-3 gap-2 mt-1">
+    <!-- PRIMARY KITCHEN ACTION CONTROLS WITH EXTRA BOTTOM CLEARANCE -->
+    <section class="flex-shrink-0 grid grid-cols-3 gap-2 mt-1 mb-2">
       <button id="startPauseBtn" onclick="toggleTimer()" class="col-span-2 py-3.5 px-4 rounded-xl font-black text-base sm:text-lg bg-neonGreen text-brandDark hover:bg-emerald-400 active:scale-95 transition shadow-glow-green flex items-center justify-center gap-2">
         <svg id="startPauseIcon" class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         <span id="startPauseLabel">START COOK</span>
@@ -663,7 +675,7 @@
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen shadow-[0_0_8px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-slate-600';
         ringLabelText.innerHTML = `<span>NEXT FLIP IN</span>`;
-        ringLabelText.className = 'absolute top-2 text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 z-10';
+        ringLabelText.className = 'absolute top-1 text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 z-10';
         
         setGaugeValue(60, 60, '#00FF66', 'rgba(0, 255, 102, 0.4)');
       } 
@@ -676,7 +688,7 @@
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen animate-pulse-glow shadow-[0_0_12px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonAmber animate-pulse-glow shadow-[0_0_6px_#FFB000]';
         ringLabelText.innerHTML = `<span>NEXT FLIP IN</span>`;
-        ringLabelText.className = 'absolute top-2 text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 z-10';
+        ringLabelText.className = 'absolute top-1 text-[11px] font-black uppercase tracking-widest text-neonCyan flex items-center gap-1.5 z-10';
 
         setGaugeValue(flipCountdownSec, 60, '#00FF66', 'rgba(0, 255, 102, 0.4)');
       } 
@@ -698,7 +710,7 @@
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_12px_#00E5FF]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_6px_#00E5FF]';
         ringLabelText.innerHTML = `<span>REST TIME REMAINING</span>`;
-        ringLabelText.className = 'absolute top-2 text-[11px] font-black uppercase tracking-widest text-neonAmber flex items-center gap-1.5 z-10';
+        ringLabelText.className = 'absolute top-1 text-[11px] font-black uppercase tracking-widest text-neonAmber flex items-center gap-1.5 z-10';
 
         const currentRestVal = Math.max(0, totalRestSec - restElapsedSec);
         setGaugeValue(currentRestVal, totalRestSec, '#00E5FF', 'rgba(0, 229, 255, 0.4)');
