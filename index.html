@@ -85,7 +85,7 @@
     }
   </style>
 </head>
-<body class="bg-brandDark text-slate-100 font-sans antialiased min-h-[100dvh] flex flex-col justify-between p-3 sm:p-4 pb-[calc(2.5rem+env(safe-area-inset-bottom))] select-none overflow-y-auto">
+<body class="bg-brandDark text-slate-100 font-sans antialiased min-h-[100dvh] flex flex-col p-3 sm:p-4 pb-[calc(2.5rem+env(safe-area-inset-bottom))] select-none overflow-y-auto">
 
   <!-- TOP HEADER / APP BAR -->
   <header class="flex-shrink-0 flex items-center justify-between px-3 py-2 bg-panelDark border border-borderDark rounded-xl shadow-lg mb-2">
@@ -203,43 +203,43 @@
         </div>
       </div>
     </section>
-<!-- CIRCULAR COUNTDOWN & NUMBER DISPLAY -->
+
+    <!-- CIRCULAR COUNTDOWN & NUMBER DISPLAY -->
     <section class="bg-panelDark border border-borderDark rounded-xl p-3 shadow-xl grid grid-cols-2 gap-3 items-center relative overflow-hidden">
       
       <!-- LEFT: CIRCULAR GAUGE (Half size horizontally of its container) -->
       <div class="relative flex items-center justify-center w-full">
-<svg class="w-full h-auto aspect-square" viewBox="0 0 240 240">
-  <circle
-    cx="120"
-    cy="120"
-    r="104"
-    stroke="#182130"
-    style="stroke-width: 14px;"
-    fill="transparent"
-  />
-  <circle
-    id="progressRing"
-    class="progress-ring-circle"
-    cx="120"
-    cy="120"
-    r="104"
-    stroke="#00FF66"
-    style="stroke-width: 14px;"
-    stroke-linecap="round"
-    fill="transparent"
-    stroke-dasharray="653.45"
-    stroke-dashoffset="0"
-  />
-</svg>
+        <svg class="w-full h-auto aspect-square" viewBox="0 0 240 240">
+          <circle
+            cx="120"
+            cy="120"
+            r="104"
+            stroke="#182130"
+            style="stroke-width: 14px;"
+            fill="transparent"
+          />
+          <circle
+            id="progressRing"
+            class="progress-ring-circle"
+            cx="120"
+            cy="120"
+            r="104"
+            stroke="#00FF66"
+            style="stroke-width: 14px;"
+            stroke-linecap="round"
+            fill="transparent"
+            stroke-dasharray="653.45"
+            stroke-dashoffset="0"
+          />
+        </svg>
 
         <div class="absolute inset-0 flex items-center justify-center">
           <span id="centerSteakIcon" class="text-2xl sm:text-3xl drop-shadow-[0_0_10px_rgba(0,255,102,0.6)] transition-all duration-300 select-none">🥩</span>
         </div>
       </div>
 
-<!-- RIGHT: LARGER NUMBER COUNTDOWN & LABELS -->
+      <!-- RIGHT: LARGER NUMBER COUNTDOWN & LABELS -->
       <div class="flex flex-col items-start justify-center">
-        <!-- Added explicit inline style to force exact matching size -->
         <span id="ringLabelText" class="font-black uppercase tracking-widest text-neonCyan mb-1 flex items-center gap-1 text-xl" style="font-size: 1.25rem;">
           NEXT FLIP IN
         </span>
@@ -297,19 +297,19 @@
 
     </section>
 
+    <!-- PRIMARY KITCHEN ACTION CONTROLS (PLACED DIRECTLY AFTER FLIP TRACKER) -->
+    <footer class="flex-shrink-0 grid grid-cols-3 gap-2 mt-2 w-full">
+      <button id="startPauseBtn" onclick="toggleTimer()" class="col-span-2 py-3 px-4 rounded-xl font-black text-base bg-neonGreen text-brandDark hover:bg-emerald-400 active:scale-95 transition shadow-glow-green flex items-center justify-center gap-2">
+        <svg id="startPauseIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <span id="startPauseLabel">START COOK</span>
+      </button>
+
+      <button id="resetBtn" onclick="resetTimer()" class="py-3 px-3 rounded-xl font-black text-sm bg-cardDark hover:bg-slate-700 text-slate-200 border border-borderDark active:scale-95 transition flex items-center justify-center">
+        RESET
+      </button>
+    </footer>
+
   </main>
-
-  <!-- PRIMARY KITCHEN ACTION CONTROLS -->
-  <footer class="flex-shrink-0 grid grid-cols-3 gap-2 mt-2 max-w-xl mx-auto w-full">
-    <button id="startPauseBtn" onclick="toggleTimer()" class="col-span-2 py-3 px-4 rounded-xl font-black text-base bg-neonGreen text-brandDark hover:bg-emerald-400 active:scale-95 transition shadow-glow-green flex items-center justify-center gap-2">
-      <svg id="startPauseIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      <span id="startPauseLabel">START COOK</span>
-    </button>
-
-    <button id="resetBtn" onclick="resetTimer()" class="py-3 px-3 rounded-xl font-black text-sm bg-cardDark hover:bg-slate-700 text-slate-200 border border-borderDark active:scale-95 transition flex items-center justify-center">
-      RESET
-    </button>
-  </footer>
 
   <script>
     /* --------------------------------------------------
@@ -656,7 +656,8 @@
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen shadow-[0_0_8px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-slate-600';
         ringLabelText.innerText = 'NEXT FLIP IN';
-        ringLabelText.className = 'text-[11px] sm:text-xs font-black uppercase tracking-widest text-neonCyan mb-0.5 flex items-center gap-1';
+        ringLabelText.className = 'font-black uppercase tracking-widest text-neonCyan mb-1 flex items-center gap-1 text-xl';
+        ringLabelText.style.fontSize = '1.25rem';
         countdownUnitText.innerText = 'SECONDS';
         
         setGaugeValue(60, 60, '#00FF66', 'rgba(0, 255, 102, 0.4)');
@@ -670,7 +671,8 @@
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen animate-pulse-glow shadow-[0_0_12px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonAmber animate-pulse-glow shadow-[0_0_6px_#FFB000]';
         ringLabelText.innerText = 'NEXT FLIP IN';
-        ringLabelText.className = 'text-[11px] sm:text-xs font-black uppercase tracking-widest text-neonCyan mb-0.5 flex items-center gap-1';
+        ringLabelText.className = 'font-black uppercase tracking-widest text-neonCyan mb-1 flex items-center gap-1 text-xl';
+        ringLabelText.style.fontSize = '1.25rem';
         countdownUnitText.innerText = 'SECONDS';
 
         setGaugeValue(flipCountdownSec, 60, '#00FF66', 'rgba(0, 255, 102, 0.4)');
@@ -693,7 +695,8 @@
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_12px_#00E5FF]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_6px_#00E5FF]';
         ringLabelText.innerText = 'REST REMAINING';
-        ringLabelText.className = 'text-[11px] sm:text-xs font-black uppercase tracking-widest text-neonAmber mb-0.5 flex items-center gap-1';
+        ringLabelText.className = 'font-black uppercase tracking-widest text-neonAmber mb-1 flex items-center gap-1 text-xl';
+        ringLabelText.style.fontSize = '1.25rem';
         countdownUnitText.innerText = 'SECONDS';
 
         const currentRestVal = Math.max(0, totalRestSec - restElapsedSec);
