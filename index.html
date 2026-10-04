@@ -357,11 +357,18 @@
     let audioCtx = null;
 
     function initAudio() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+
       if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        audioCtx = new AudioContextClass();
       }
+
+      // iOS Safari requires explicit resume inside a direct user gesture
       if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
+        audioCtx.resume().then(() => {
+          // Play a silent buffer or dummy sound to fully unlock iOS audio channel if needed
+        });
       }
     }
 
@@ -566,7 +573,7 @@
         cookElapsedSec++;
         flipCountdownSec--;
 
-        if (flipCountdownSec <= 3 && flipCountdownSec > 0) {
+        if (flipCountdownSec <= 5 && flipCountdownSec > 0) {
           playBeep('tick');
         }
 

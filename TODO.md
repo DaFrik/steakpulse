@@ -27,4 +27,3 @@ Frequent flips prevent moisture from pooling on the top surface of the steak. Se
 3. ⁠by choosing rare/medium rare/medium/medium well/well done, the time for cooking and resting are set. Is it necessary to hv the user +/- the time themselves?
 4. ⁠the elapsed/total info is a bit too much for me. Since you hv the time bar at the bottom, i think that is sufficient info for the user. 
 5. ⁠the time tracker doesnt run in the background, if i switch to other app, i dun receive notification 
-6. ⁠the beeping sound can start earlier like when 5 seconds remaining instead of 3 seconds.
