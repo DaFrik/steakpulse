@@ -203,38 +203,37 @@
         </div>
       </div>
     </section>
-
-    <!-- CIRCULAR COUNTDOWN & NUMBER DISPLAY (SCALED UP FOR KITCHEN) -->
+<!-- CIRCULAR COUNTDOWN & NUMBER DISPLAY -->
     <section class="bg-panelDark border border-borderDark rounded-xl p-3 shadow-xl grid grid-cols-2 gap-3 items-center relative overflow-hidden">
       
-      <!-- LEFT: SCALED-UP CIRCULAR GAUGE WITH CENTER STEAK EMOJI -->
-      <div class="relative flex items-center justify-center">
-        <svg class="w-36 h-36 sm:w-40 sm:h-40" viewBox="0 0 120 120">
-          <circle
-            cx="60"
-            cy="60"
-            r="52"
-            stroke="#182130"
-            style="stroke-width: 7px;"
-            fill="transparent"
-          />
-          <circle
-            id="progressRing"
-            class="progress-ring-circle"
-            cx="60"
-            cy="60"
-            r="52"
-            stroke="#00FF66"
-            style="stroke-width: 7px;"
-            stroke-linecap="round"
-            fill="transparent"
-            stroke-dasharray="326.72"
-            stroke-dashoffset="0"
-          />
-        </svg>
+      <!-- LEFT: CIRCULAR GAUGE (Half size horizontally of its container) -->
+      <div class="relative flex items-center justify-center w-full">
+<svg class="w-full h-auto aspect-square" viewBox="0 0 240 240">
+  <circle
+    cx="120"
+    cy="120"
+    r="104"
+    stroke="#182130"
+    style="stroke-width: 14px;"
+    fill="transparent"
+  />
+  <circle
+    id="progressRing"
+    class="progress-ring-circle"
+    cx="120"
+    cy="120"
+    r="104"
+    stroke="#00FF66"
+    style="stroke-width: 14px;"
+    stroke-linecap="round"
+    fill="transparent"
+    stroke-dasharray="653.45"
+    stroke-dashoffset="0"
+  />
+</svg>
 
         <div class="absolute inset-0 flex items-center justify-center">
-          <span id="centerSteakIcon" class="text-3xl sm:text-4xl drop-shadow-[0_0_10px_rgba(0,255,102,0.6)] transition-all duration-300 select-none">🥩</span>
+          <span id="centerSteakIcon" class="text-2xl sm:text-3xl drop-shadow-[0_0_10px_rgba(0,255,102,0.6)] transition-all duration-300 select-none">🥩</span>
         </div>
       </div>
 
@@ -244,8 +243,8 @@
           NEXT FLIP IN
         </span>
         <div class="flex items-baseline">
-          <!-- Increased font size to text-7xl sm:text-8xl for maximum kitchen visibility -->
-          <span id="countdownNumber" class="font-extrabold text-neonGreen tracking-tight drop-shadow-[0_0_16px_rgba(0,255,102,0.5)] tabular-nums leading-none text-8xl sm:text-9xl">
+          <!-- Increased font size further to text-9xl sm:text-[10rem] -->
+          <span id="countdownNumber" class="font-extrabold text-neonGreen tracking-tight drop-shadow-[0_0_16px_rgba(0,255,102,0.5)] tabular-nums leading-none text-9xl sm:text-[10rem]">
             60
           </span>
         </div>
