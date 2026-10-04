@@ -332,7 +332,7 @@
 
     let soundMuted = false;
 
-    const CIRCLE_RADIUS = 52;
+    const CIRCLE_RADIUS = 104;
     const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * CIRCLE_RADIUS;
 
     const steakRecommendations = {
@@ -688,20 +688,45 @@
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-slate-600';
       }
       else if (timerState === 'RESTING') {
-        phaseBadge.innerText = 'RESTING';
+       phaseBadge.innerText = 'RESTING';
         phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-cyan-500/20 text-neonCyan border border-neonCyan/40 uppercase tracking-widest tabular-nums';
         startPauseBtn.className = 'col-span-2 py-3 px-4 rounded-xl font-black text-base bg-neonAmber text-brandDark hover:bg-amber-400 active:scale-95 transition shadow-glow-amber flex items-center justify-center gap-2';
         startPauseLabel.innerText = 'PAUSE REST';
         startPauseIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_12px_#00E5FF]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonCyan animate-pulse-glow shadow-[0_0_6px_#00E5FF]';
-        ringLabelText.innerText = 'REST REMAINING';
+        ringLabelText.innerText = 'REST LEFT';
         ringLabelText.className = 'font-black uppercase tracking-widest text-neonAmber mb-1 flex items-center gap-1 text-xl';
         ringLabelText.style.fontSize = '1.25rem';
         countdownUnitText.innerText = 'SECONDS';
 
         const currentRestVal = Math.max(0, totalRestSec - restElapsedSec);
-        setGaugeValue(currentRestVal, totalRestSec, '#00E5FF', 'rgba(0, 229, 255, 0.4)');
+
+        // If resting time is greater than 99 seconds, show "~~" with the giant font.
+        // Once it hits 99 seconds or below, show the actual numbers and count down.
+        if (currentRestVal > 99) {
+          const ring = document.getElementById('progressRing');
+          const numDisplay = document.getElementById('countdownNumber');
+          const steakIcon = document.getElementById('centerSteakIcon');
+
+          numDisplay.innerText = "~~";
+          numDisplay.style.color = '#00E5FF';
+          numDisplay.style.filter = 'drop-shadow(0 0 16px rgba(0, 229, 255, 0.4))';
+          
+          if (steakIcon) {
+            steakIcon.style.filter = 'drop-shadow(0 0 10px rgba(0, 229, 255, 0.4))';
+          }
+
+          // Keep the progress ring updating smoothly during the whole rest phase
+          const fraction = Math.max(0, Math.min(1, currentRestVal / totalRestSec));
+          const offset = CIRCLE_CIRCUMFERENCE * (1 - fraction);
+          ring.style.strokeDashoffset = offset;
+          ring.style.stroke = '#00E5FF';
+          ring.style.filter = 'drop-shadow(0 0 8px rgba(0, 229, 255, 0.4))';
+        } else {
+          // Once 99 seconds or less remain, show the normal 2-digit countdown
+          setGaugeValue(currentRestVal, totalRestSec, '#00E5FF', 'rgba(0, 229, 255, 0.4)');
+        }
       }
 
       const flipCounterText = document.getElementById('flipCounterText');
