@@ -110,7 +110,7 @@
         READY
       </span>
       <button id="soundToggleBtn" onclick="toggleMute()" class="flex items-center gap-1.5 px-3 py-1 bg-cardDark hover:bg-slate-700 active:scale-95 transition border border-borderDark rounded-lg text-xs font-black text-slate-300">
-        <svg id="soundIcon" class="w-4 h-4 text-neonCyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg id="soundIcon" class="w-4 h-4 text-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"/>
         </svg>
         <span id="soundText" class="hidden sm:inline">BEEP</span>
@@ -154,7 +154,7 @@
           </div>
           <div class="flex items-center bg-cardDark border border-borderDark rounded-lg px-2 py-0 h-11 box-border">
             <input type="number" id="thicknessInput" value="2.5" step="0.5" min="1.0" max="8.0" onchange="onSteakConfigChange()" oninput="onSteakConfigChange()" class="w-full h-full bg-transparent font-extrabold text-base sm:text-lg text-white text-center focus:outline-none tabular-nums">
-            <span id="unitLabel" class="text-xs font-black text-neonCyan uppercase ml-1">cm</span>
+            <span id="unitLabel" class="text-xs font-black text-neonGreen uppercase ml-1">cm</span>
           </div>
         </div>
       </div>
@@ -163,8 +163,8 @@
       <div class="mb-2">
         <div class="flex justify-between items-center mb-1">
           <label class="text-[11px] font-black uppercase tracking-wider text-slate-400">Doneness</label>
-          <span class="text-[10px] font-extrabold text-neonAmber flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-neonAmber shadow-[0_0_6px_#FFB000]"></span> Chef's Pick
+          <span class="text-[10px] font-extrabold text-neonRed flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-neonRed shadow-[0_0_6px_#FFB000]"></span> Chef's Pick
           </span>
         </div>
         <div class="grid grid-cols-5 gap-1" id="donenessButtonGroup">
@@ -301,8 +301,8 @@
         </div>
 
         <div class="flex justify-between items-center text-xs font-black tabular-nums">
-          <span id="progressPercentText" class="px-2 py-0.5 bg-cardDark/80 border border-borderDark rounded text-neonCyan text-[11px]">0%</span>
-          <span id="timeRemainingText" class="px-2 py-0.5 bg-cardDark/80 border border-borderDark rounded text-neonAmber text-[11px]">05:00 LEFT</span>
+          <span id="progressPercentText" class="px-2 py-0.5 bg-cardDark/80 border border-borderDark rounded text-neonGreen text-[11px]">0%</span>
+          <span id="timeRemainingText" class="px-2 py-0.5 bg-cardDark/80 border border-borderDark rounded text-neonGreen text-[11px]">05:00 LEFT</span>
         </div>
       </div>
 
@@ -505,7 +505,7 @@
         }
 
         btn.className = classes;
-        const dotHTML = isRec ? `<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-neonAmber rounded-full border border-brandDark shadow-[0_0_6px_#FFB000]"></span>` : '';
+        const dotHTML = isRec ? `<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-neonRed rounded-full border border-brandDark shadow-[0_0_6px_#FFB000]"></span>` : '';
         
         let label = d.replace('_', '-');
         if (d === 'rare') label = 'Rare';
@@ -672,7 +672,7 @@
 
       if (timerState === 'STOPPED') {
         phaseBadge.innerText = 'READY';
-        phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-amber-500/20 text-neonAmber border border-neonAmber/40 uppercase tracking-widest tabular-nums';
+        phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-emerald-500/20 text-neonGreen border border-neonGreen/40 uppercase tracking-widest tabular-nums';
         startPauseBtn.className = 'col-span-2 py-3 px-4 rounded-xl font-black text-base bg-neonGreen text-brandDark hover:bg-emerald-400 active:scale-95 transition shadow-glow-green flex items-center justify-center gap-2';
         startPauseLabel.innerText = 'START COOK';
         startPauseIcon.innerHTML = `<path d="M8 5v14l11-7z"/>`;
@@ -687,7 +687,7 @@
       } 
       else if (timerState === 'COOKING') {
         phaseBadge.innerText = 'COOKING';
-        phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-emerald-500/20 text-neonGreen border border-neonGreen/40 uppercase tracking-widest tabular-nums';
+        phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-amber-500/20 text-neonAmber border border-neonAmber/40 uppercase tracking-widest tabular-nums';
         startPauseBtn.className = 'col-span-2 py-3 px-4 rounded-xl font-black text-base bg-neonAmber text-brandDark hover:bg-amber-400 active:scale-95 transition shadow-glow-amber flex items-center justify-center gap-2';
         startPauseLabel.innerText = 'PAUSE';
         startPauseIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
