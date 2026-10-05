@@ -244,8 +244,7 @@
         </svg>
 
         <div class="absolute inset-0 flex items-center justify-center">
-          <!-- Updated code -->
-<span id="centerSteakIcon" class="text-5xl sm:text-6xl drop-shadow-[0_0_10px_rgba(0,255,102,0.6)] transition-all duration-300 select-none">🥩</span>
+          <span id="centerSteakIcon" class="text-5xl sm:text-6xl drop-shadow-[0_0_10px_rgba(0,255,102,0.6)] transition-all duration-300 select-none">🥩</span>
         </div>
       </div>
 
@@ -361,6 +360,12 @@
       well: 7.5
     };
 
+    function getFlipIntervalSec() {
+      const thicknessVal = parseFloat(document.getElementById('thicknessInput').value) || 1.0;
+      const thicknessCm = currentUnit === 'cm' ? thicknessVal : thicknessVal * 2.54;
+      return thicknessCm < 2.0 ? 30 : 60;
+    }
+
     /* --------------------------------------------------
      * AUDIO SYNTHESIS
      * -------------------------------------------------- */
@@ -374,11 +379,8 @@
         audioCtx = new AudioContextClass();
       }
 
-      // iOS Safari requires explicit resume inside a direct user gesture
       if (audioCtx.state === 'suspended') {
-        audioCtx.resume().then(() => {
-          // Play a silent buffer or dummy sound to fully unlock iOS audio channel if needed
-        });
+        audioCtx.resume().then(() => {});
       }
     }
 
@@ -529,6 +531,8 @@
       cookTargetMins = Math.max(2, Math.min(20, rawCookMins));
       restTargetMins = Math.max(3, Math.round(cookTargetMins * 0.8));
 
+      flipCountdownSec = getFlipIntervalSec();
+
       updateUI();
     }
 
@@ -551,7 +555,7 @@
       if (timerState === 'STOPPED') {
         timerState = 'COOKING';
         cookElapsedSec = 0;
-        flipCountdownSec = 60;
+        flipCountdownSec = getFlipIntervalSec();
         startInterval();
       } else if (timerState === 'COOKING') {
         timerState = 'PAUSED_COOK';
@@ -578,6 +582,7 @@
     function tick() {
       const totalCookSec = cookTargetMins * 60;
       const totalRestSec = restTargetMins * 60;
+      const flipInterval = getFlipIntervalSec();
 
       if (timerState === 'COOKING') {
         cookElapsedSec++;
@@ -589,7 +594,7 @@
 
         if (flipCountdownSec <= 0) {
           playBeep('flip');
-          flipCountdownSec = 60;
+          flipCountdownSec = flipInterval;
         }
 
         if (cookElapsedSec >= totalCookSec) {
@@ -619,7 +624,7 @@
       timerState = 'STOPPED';
       cookElapsedSec = 0;
       restElapsedSec = 0;
-      flipCountdownSec = 60;
+      flipCountdownSec = getFlipIntervalSec();
 
       calculateTimes();
       updateUI();
@@ -652,6 +657,7 @@
     function updateUI() {
       const totalCookSec = cookTargetMins * 60;
       const totalRestSec = restTargetMins * 60;
+      const flipInterval = getFlipIntervalSec();
 
       document.getElementById('cookTargetMins').innerText = cookTargetMins;
       document.getElementById('restTargetMins').innerText = restTargetMins;
@@ -678,7 +684,7 @@
         ringLabelText.style.fontSize = '1.25rem';
         countdownUnitText.innerText = 'SECONDS';
         
-        setGaugeValue(60, 60, '#00FF66', 'rgba(0, 255, 102, 0.4)');
+        setGaugeValue(flipInterval, flipInterval, '#00FF66', 'rgba(0, 255, 102, 0.4)');
       } 
       else if (timerState === 'COOKING') {
         phaseBadge.innerText = 'COOKING';
@@ -693,7 +699,7 @@
         ringLabelText.style.fontSize = '1.25rem';
         countdownUnitText.innerText = 'SECONDS';
 
-        setGaugeValue(flipCountdownSec, 60, '#00FF66', 'rgba(0, 255, 102, 0.4)');
+        setGaugeValue(flipCountdownSec, flipInterval, '#00FF66', 'rgba(0, 255, 102, 0.4)');
       } 
       else if (timerState === 'PAUSED_COOK' || timerState === 'PAUSED_REST') {
         phaseBadge.innerText = 'PAUSED';
@@ -705,7 +711,7 @@
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-slate-600';
       }
       else if (timerState === 'RESTING') {
-       phaseBadge.innerText = 'RESTING';
+        phaseBadge.innerText = 'RESTING';
         phaseBadge.className = 'text-xs font-black px-2.5 py-1 rounded-md bg-cyan-500/20 text-neonCyan border border-neonCyan/40 uppercase tracking-widest tabular-nums';
         startPauseBtn.className = 'col-span-2 py-3 px-4 rounded-xl font-black text-base bg-neonAmber text-brandDark hover:bg-amber-400 active:scale-95 transition shadow-glow-amber flex items-center justify-center gap-2';
         startPauseLabel.innerText = 'PAUSE REST';
@@ -719,8 +725,6 @@
 
         const currentRestVal = Math.max(0, totalRestSec - restElapsedSec);
 
-        // If resting time is greater than 99 seconds, show "~~" with the giant font.
-        // Once it hits 99 seconds or below, show the actual numbers and count down.
         if (currentRestVal > 99) {
           const ring = document.getElementById('progressRing');
           const numDisplay = document.getElementById('countdownNumber');
@@ -734,14 +738,12 @@
             steakIcon.style.filter = 'drop-shadow(0 0 10px rgba(0, 229, 255, 0.4))';
           }
 
-          // Keep the progress ring updating smoothly during the whole rest phase
           const fraction = Math.max(0, Math.min(1, currentRestVal / totalRestSec));
           const offset = CIRCLE_CIRCUMFERENCE * (1 - fraction);
           ring.style.strokeDashoffset = offset;
           ring.style.stroke = '#00E5FF';
           ring.style.filter = 'drop-shadow(0 0 8px rgba(0, 229, 255, 0.4))';
         } else {
-          // Once 99 seconds or less remain, show the normal 2-digit countdown
           setGaugeValue(currentRestVal, totalRestSec, '#00E5FF', 'rgba(0, 229, 255, 0.4)');
         }
       }
@@ -771,8 +773,8 @@
         const remSec = Math.max(0, totalRestSec - restElapsedSec);
         timeRemainingText.innerText = `${formatMMSS(remSec)} LEFT`;
       } else {
-        const currentFlip = Math.floor(cookElapsedSec / 60) + 1;
-        const totalFlips = cookTargetMins;
+        const currentFlip = Math.floor(cookElapsedSec / flipInterval) + 1;
+        const totalFlips = Math.ceil(totalCookSec / flipInterval);
         flipCounterText.innerText = `FLIP #${Math.min(currentFlip, totalFlips)} OF ${totalFlips}`;
         flipCounterText.className = "font-black text-sm text-neonGreen tracking-tight text-center tabular-nums";
 
