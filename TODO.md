@@ -23,6 +23,8 @@ Frequent flips prevent moisture from pooling on the top surface of the steak. Se
 
 - add dialog to tell user to use reverse sear if steak thickness is 3.8cm or above
 
+- add in tips section for "If you want a charred crust on a thin 1cm flat iron or 2cm ribeye without overcooking the inside, the trick isn't to leave it on the grill longer—it's to get the grill/pan significantly hotter (screaming hot) and keep flipping every 30 seconds!"
+
 - feedback from user (Edith)
 1. Can the steak icon change according to the steak type i choose?
 2. ⁠right now the standard cooking time is 1 min per side. But sometimes i cook more than 1 min per side to get it charred or crisp. And fewer times of flipping. 
