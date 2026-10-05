@@ -54,6 +54,7 @@
             neonCyan: '#00E5FF',
             neonAmber: '#FFB000',
             neonRed: '#FF3366',
+            neonPurple: '#B026FF',
             restCyan: '#00E5FF',
           },
           fontFamily: {
@@ -250,7 +251,7 @@
 
       <!-- RIGHT: LARGER NUMBER COUNTDOWN & LABELS -->
       <div class="flex flex-col items-start justify-center">
-        <span id="ringLabelText" class="font-black uppercase tracking-widest text-neonCyan mb-1 flex items-center gap-1 text-xl" style="font-size: 1.25rem;">
+        <span id="ringLabelText" class="font-black uppercase tracking-widest text-neonGreen mb-1 flex items-center gap-1 text-xl" style="font-size: 1.25rem;">
           NEXT FLIP IN
         </span>
         <div class="flex items-baseline">
@@ -280,7 +281,7 @@
           <div id="flipCounterText" class="font-black text-sm text-neonGreen tracking-tight text-center tabular-nums">
             FLIP #1 OF 10
           </div>
-          <div id="sideIndicator" class="text-[10px] font-extrabold text-neonCyan tracking-wider uppercase text-center mt-0.5">
+          <div id="sideIndicator" class="text-[10px] font-extrabold text-neonAmber tracking-wider uppercase text-center mt-0.5">
             SIDE A COOKING
           </div>
         </div>
@@ -678,7 +679,7 @@
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen shadow-[0_0_8px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-slate-600';
         ringLabelText.innerText = 'NEXT FLIP IN';
-        ringLabelText.className = 'font-black uppercase tracking-widest text-neonCyan mb-1 flex items-center gap-1 text-xl';
+        ringLabelText.className = 'font-black uppercase tracking-widest text-neonGreen mb-1 flex items-center gap-1 text-xl';
         ringLabelText.style.fontSize = '1.25rem';
         countdownUnitText.innerText = 'SECONDS';
         
@@ -693,7 +694,7 @@
         statusDot.className = 'w-3.5 h-3.5 rounded-full bg-neonGreen animate-pulse-glow shadow-[0_0_12px_#00FF66]';
         elapsedBlinkDot.className = 'w-2 h-2 rounded-full bg-neonAmber animate-pulse-glow shadow-[0_0_6px_#FFB000]';
         ringLabelText.innerText = 'NEXT FLIP IN';
-        ringLabelText.className = 'font-black uppercase tracking-widest text-neonCyan mb-1 flex items-center gap-1 text-xl';
+        ringLabelText.className = 'font-black uppercase tracking-widest text-neonGreen mb-1 flex items-center gap-1 text-xl';
         ringLabelText.style.fontSize = '1.25rem';
         countdownUnitText.innerText = 'SECONDS';
 
@@ -758,7 +759,7 @@
         flipCounterText.innerText = "RESTING STEAK";
         flipCounterText.className = "font-black text-sm text-neonCyan tracking-tight text-center tabular-nums";
         sideIndicator.innerText = "DO NOT CUT YET";
-        sideIndicator.className = "text-[10px] font-extrabold text-neonAmber tracking-wider uppercase text-center mt-0.5";
+        sideIndicator.className = "text-[10px] font-extrabold text-neonGreen tracking-wider uppercase text-center mt-0.5";
 
         totalElapsedDigits.innerText = formatMMSS(restElapsedSec);
         totalTargetDigits.innerText = formatMMSS(totalRestSec);
@@ -778,7 +779,7 @@
 
         const isSideA = currentFlip % 2 !== 0;
         sideIndicator.innerText = isSideA ? "SIDE A COOKING" : "SIDE B COOKING";
-        sideIndicator.className = "text-[10px] font-extrabold text-neonCyan tracking-wider uppercase text-center mt-0.5";
+        sideIndicator.className = "text-[10px] font-extrabold text-neonAmber tracking-wider uppercase text-center mt-0.5";
 
         totalElapsedDigits.innerText = formatMMSS(cookElapsedSec);
         totalTargetDigits.innerText = formatMMSS(totalCookSec);
